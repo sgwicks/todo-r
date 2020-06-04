@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import './App.css';
+import styled from 'styled-components'
 import Task from './components/Task'
-import Status from './components/Status';
+
+const TaskList = styled.ul`
+  list-style-type: none;
+`
 
 function App() {
   const [taskList] = useState(['Sweep \'til the floor\'s all clean', 'Polish and wax', 'Do laundry', 'Mop and shine up'])
@@ -9,11 +12,9 @@ function App() {
   return (
     <div className="App">
       <h1>Chores</h1>
-      <ul>
-  {taskList.map((task, i) => <Task status='done' key={'task' + i}>{task}</Task>)}
-        <li>Sample generic li</li>
-      </ul>
-      <Status />
+      <TaskList>
+        {taskList.map((task, i) => <Task status='done' key={'task' + i}>{task}</Task>)}
+      </TaskList>
     </div>
   );
 }
