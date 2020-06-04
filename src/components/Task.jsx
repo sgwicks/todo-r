@@ -1,10 +1,16 @@
 import React from 'react';
-import Li from './styled/Li'
+import styled from 'styled-components';
 
-const Task = ({task}) => {
-    return (
-    <Li status="done">{task}</Li>
-    );
-};
+const Task = ({className, children}) => <li className={className}>{children}</li>
 
-export default Task;
+const StyledTask = styled(Task)`
+    list-style-type: ${props => {
+        switch(props.status) {
+            case 'done': return 'square';
+            case 'doing': return 'decimal';
+            default: return 'round';
+        }
+    }};
+`
+
+export default StyledTask;

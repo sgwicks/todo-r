@@ -9,7 +9,7 @@ function App() {
     <div className="App">
       <h1>Chores</h1>
       <ul>
-        {taskList.map((task, i) => <Task key={'task' + i} task={task} />)}
+  {taskList.map((task, i) => <Task status='done' key={'task' + i}>{task}</Task>)}
         <li>Final task</li>
       </ul>
     </div>
