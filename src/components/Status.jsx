@@ -24,8 +24,8 @@ const Status = () => {
             [{status}]
         </StatusButton>
         {showOptions && options
-        .map(option => {
-            return <StatusButton onClick={() => pickStatus(option)}>{option}</StatusButton>
+        .map((option) => {
+            return <StatusButton key={option} onClick={() => pickStatus(option)}>{option}</StatusButton>
         })
         }
         </>
