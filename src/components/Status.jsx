@@ -18,18 +18,22 @@ const Status = () => {
         toggleShowOptions(!showOptions)
     }
 
+    const pickStatus = () => {
+
+    }
+
+    const options = ['o', 'x', '/', '*', '>'];
+
     return (
         <>
         <StatusButton onClick={handleStatus}>
             [{status}]
         </StatusButton>
-        {showOptions && [
-            <StatusButton onClick={() => setStatus('o')}>o</StatusButton>,
-            <StatusButton onClick={() => setStatus('x')}>x</StatusButton>,
-            <StatusButton onClick={() => setStatus('/')}>/</StatusButton>,
-            <StatusButton onClick={() => setStatus('*')}>*</StatusButton>,
-            <StatusButton onClick={() => setStatus('>')}>></StatusButton>
-            ]}
+        {showOptions && options
+        .map(option => {
+            return <StatusButton onClick={() => setStatus(option)}>{option}</StatusButton>
+        })
+        }
         </>
     );
 };
