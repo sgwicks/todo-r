@@ -8,7 +8,8 @@ function App() {
   return (
     <div className="App">
       <h1>Chores</h1>
-      <TaskList />
+      <TaskList listName={'The Usual Morning Line-up'} />
+      <TaskList listName={'After Lunch'} />
     </div>
   );
 }

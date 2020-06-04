@@ -1,13 +1,6 @@
 import React, { useState } from 'react';
-import styled from 'styled-components'
+import StatusButton from './StatusButton'
 
-const StatusButton = styled.button`
-    cursor: pointer;
-    margin: 0 5px;
-    padding: 0;
-    border: none;
-    font-family: "Lucida Console", Monaco, monospace;
-`
 
 const Status = () => {
 
