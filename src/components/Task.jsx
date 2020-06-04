@@ -1,8 +1,9 @@
 import React from 'react';
+import Li from './styled/Li'
 
 const Task = ({task}) => {
     return (
-    <li>{task}</li>
+    <Li status="done">{task}</Li>
     );
 };
 

@@ -10,6 +10,7 @@ function App() {
       <h1>Chores</h1>
       <ul>
         {taskList.map((task, i) => <Task key={'task' + i} task={task} />)}
+        <li>Final task</li>
       </ul>
     </div>
   );
