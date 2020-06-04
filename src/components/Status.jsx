@@ -11,17 +11,26 @@ const StatusButton = styled.button`
 
 const Status = () => {
 
-    const [status, setStatus] = useState('o')
+    const [status, setStatus] = useState('o');
+    const [showOptions, toggleShowOptions] = useState(false)
 
     const handleStatus = () => {
-        if (status === 'x') setStatus('o');
-        if (status === 'o') setStatus('x')
+        toggleShowOptions(!showOptions)
     }
 
     return (
+        <>
         <StatusButton onClick={handleStatus}>
             [{status}]
         </StatusButton>
+        {showOptions && [
+            <StatusButton onClick={() => setStatus('o')}>o</StatusButton>,
+            <StatusButton onClick={() => setStatus('x')}>x</StatusButton>,
+            <StatusButton onClick={() => setStatus('/')}>/</StatusButton>,
+            <StatusButton onClick={() => setStatus('*')}>*</StatusButton>,
+            <StatusButton onClick={() => setStatus('>')}>></StatusButton>
+            ]}
+        </>
     );
 };
 
