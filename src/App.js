@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import TaskList from './components/TaskList'
 
-
 function App() {
   const [input, setInput] = useState('Add a new list')
   const [taskLists, setTaskLists] = useState(['The Usual Morning Line-up', 'After Lunch'])

@@ -1,15 +1,20 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import styled from 'styled-components'
 import Task from './Task'
 import StatusButton from './StatusButton'
+import taskLists from '../taskLists.json'
 
 const List = styled.ul`
   list-style-type: none;
 `
 
 const TaskList = ({listName}) => {
-    const [taskList, setTaskList] = useState(['Sweep \'til the floor\'s all clean', 'Polish and wax', 'Do laundry', 'Mop and shine up'])
+    const [taskList, setTaskList] = useState([])
     const [input, setInput] = useState('Add a new task...')
+
+    useEffect(() => {
+      setTaskList(taskLists[listName])
+    }, [listName])
 
     const addTask = (event) => {
         event.preventDefault();
