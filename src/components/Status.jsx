@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const StatusButton = styled.button`
     cursor: pointer;
-    margin: 0;
+    margin: 0 5px;
     padding: 0;
     border: none;
     font-family: "Lucida Console", Monaco, monospace;
@@ -18,8 +18,9 @@ const Status = () => {
         toggleShowOptions(!showOptions)
     }
 
-    const pickStatus = () => {
-
+    const pickStatus = (option) => {
+        setStatus(option);
+        toggleShowOptions(false);
     }
 
     const options = ['o', 'x', '/', '*', '>'];
@@ -31,7 +32,7 @@ const Status = () => {
         </StatusButton>
         {showOptions && options
         .map(option => {
-            return <StatusButton onClick={() => setStatus(option)}>{option}</StatusButton>
+            return <StatusButton onClick={() => pickStatus(option)}>{option}</StatusButton>
         })
         }
         </>
