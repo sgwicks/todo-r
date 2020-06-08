@@ -8,13 +8,13 @@ const List = styled.ul`
   list-style-type: none;
 `
 
-const TaskList = ({listName}) => {
+const TaskList = ({list}) => {
     const [taskList, setTaskList] = useState([])
     const [input, setInput] = useState('Add a new task...')
 
     useEffect(() => {
-      setTaskList(taskLists[listName])
-    }, [listName])
+      setTaskList(list.tasks)
+    }, [list])
 
     const addTask = (event) => {
         event.preventDefault();
@@ -28,7 +28,7 @@ const TaskList = ({listName}) => {
 
     return (
         <>
-        <h2>{listName}</h2>
+        <h2>{list.name}</h2>
         <List>
           {taskList.map((task, i) => <Task status='done' key={'task' + i}>{task}</Task>)}
         <form onSubmit={addTask}>
