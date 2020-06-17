@@ -42,23 +42,41 @@ const openDB = (cb) => {
     const db = event.target.result;
 
     // Clear whatever is currently in task_lists
-    const clearObjectStore = () => {
+    const clearObjectStore = (cb) => {
       const transaction = db.transaction('task_lists', 'readwrite')
 
       const store = transaction.objectStore('task_lists')
 
-      const request = store.clear();
+      const lists = [];
 
-      request.onsuccess = event => {
-        console.log('store cleared')
+      // Save the lists before clearing them
+      store.openCursor().onsuccess = event => {
+        const cursor = event.target.result;
+        if (cursor) {
+          console.log('cursor.key:', cursor.key);
+          const request = store.get(cursor.key);
+          request.onsuccess = event => {
+            lists.push(event.target.result)
+          }
+          cursor.continue();
+        }
+        else {
+          console.log('No more entries')
+          console.log(lists)
+          const request = store.clear();
+
+          request.onsuccess = event => {
+            console.log('store cleared')
+            cb(lists)
+          }
+
+          request.onerror = event => {
+            console.error('clearObjectStore error:', event.target.errorCode)
+          }
+        }
       }
 
-      request.onerror = event => {
-        console.error('clearObjectStore error:', event.target.errorCode)
-      }
     }
-
-    clearObjectStore();
 
     // Refill the task_lists store 
     const addLists = (lists) => {
@@ -80,9 +98,8 @@ const openDB = (cb) => {
           console.log('list added:', event.target.result) // The PSK of the added list
         }
       })
+      getLists(cb)
     }
-
-    addLists(taskList)
 
     // Fetch the lists from task_lists and pass them to the callback
     const getLists = (cb) => {
@@ -106,7 +123,8 @@ const openDB = (cb) => {
       }
     }
 
-    getLists(cb)
+    // addLists(taskList)
+    clearObjectStore(addLists);
   }
 }
 
