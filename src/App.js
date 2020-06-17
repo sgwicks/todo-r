@@ -33,7 +33,7 @@ const openDB = (cb) => {
     if (!db.objectStoreNames.contains('task_lists')) {
       db.createObjectStore('task_lists', { autoIncrement: true })
     } else {
-      console.log('task_lists alreaady exists')
+      console.log('task_lists already exists')
     }
   }
 
@@ -128,6 +128,34 @@ const openDB = (cb) => {
   }
 }
 
+const addListDB = (list) => {
+  const request = window.indexedDB.open('taskListsDB')
+
+  request.onerror = event => {
+    console.log('request error:', event)
+  }
+
+  request.onsuccess = event => {
+    const db = event.target.result;
+    const transaction = db.transaction('task_lists', 'readwrite');
+
+    transaction.oncomplete = () => {
+      console.log('List added: ', list.name)
+    }
+
+    transaction.onerror = event => {
+      console.log('List add failed: ', event)
+    }
+
+    const objectStore = transaction.objectStore('task_lists');
+
+    const request = objectStore.add(list);
+    request.onsuccess = event => {
+      console.log('List added: ', event.target.result)
+    }
+  }
+}
+
 
 function App() {
   const [input, setInput] = useState('Add a new list')
@@ -140,6 +168,7 @@ function App() {
   const addTaskList = (event) => {
     event.preventDefault();
     setTaskLists([...taskLists, { name: input, tasks: [] }])
+    addListDB({ name: input, tasks: [] })
     setInput('')
   }
 
