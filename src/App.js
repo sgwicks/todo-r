@@ -29,6 +29,7 @@ const openDB = (cb) => {
   request.onupgradeneeded = event => {
     const db = event.target.result
 
+    // Create task_lists if it does not already exist
     if (!db.objectStoreNames.contains('task_lists')) {
       db.createObjectStore('task_lists', { autoIncrement: true })
     } else {
@@ -40,11 +41,11 @@ const openDB = (cb) => {
     console.log('success!')
     const db = event.target.result;
 
+    // Clear whatever is currently in task_lists
     const clearObjectStore = () => {
       const transaction = db.transaction('task_lists', 'readwrite')
 
       const store = transaction.objectStore('task_lists')
-
 
       const request = store.clear();
 
@@ -53,31 +54,18 @@ const openDB = (cb) => {
       }
 
       request.onerror = event => {
-        console.error('clearObjectStore', event.target.errorCode)
+        console.error('clearObjectStore error:', event.target.errorCode)
       }
-      //   store.openCursor().onsuccess = event => {
-      //     const cursor = event.target.result;
-      //     if (cursor) {
-      //         console.log('cursor.key:', cursor.key);
-      //         const request = store.delete(cursor.key);
-      //         request.onsuccess = event => {
-      //           console.log('cleared ', cursor.key)
-      //         }
-      //         cursor.continue();
-      //     }
-      //     else {
-      //         console.log('No more entries')
-      //     }
-      // }
     }
 
     clearObjectStore();
 
+    // Refill the task_lists store 
     const addLists = (lists) => {
       const transaction = db.transaction('task_lists', 'readwrite');
 
       transaction.oncomplete = event => {
-        console.log('list added')
+        console.log('All lists added')
       }
 
       transaction.onerror = event => {
@@ -89,12 +77,14 @@ const openDB = (cb) => {
       lists.forEach(list => {
         const request = objectStore.add(list);
         request.onsuccess = event => {
-          console.log('customer added:', event.target.result)
+          console.log('list added:', event.target.result) // The PSK of the added list
         }
       })
     }
+
     addLists(taskList)
 
+    // Fetch the lists from task_lists and pass them to the callback
     const getLists = (cb) => {
       const lists = [];
       const store = db.transaction('task_lists').objectStore('task_lists');
@@ -115,6 +105,7 @@ const openDB = (cb) => {
         }
       }
     }
+
     getLists(cb)
   }
 }
@@ -130,7 +121,7 @@ function App() {
 
   const addTaskList = (event) => {
     event.preventDefault();
-    setTaskLists([...taskLists, input])
+    setTaskLists([...taskLists, { name: input, tasks: [] }])
     setInput('')
   }
 
